@@ -2,6 +2,8 @@ package com.scienjus.config;
 
 import com.mangofactory.swagger.configuration.SpringSwaggerConfig;
 import com.mangofactory.swagger.models.dto.ApiInfo;
+import com.mangofactory.swagger.paths.AbsoluteSwaggerPathProvider;
+import com.mangofactory.swagger.paths.RelativeSwaggerPathProvider;
 import com.mangofactory.swagger.plugin.EnableSwagger;
 import com.mangofactory.swagger.plugin.SwaggerSpringMvcPlugin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,11 +30,13 @@ public class SwaggerConfig {
 
     @Bean
     public SwaggerSpringMvcPlugin customImplementation() {
+    	System.out.println("base path="+springSwaggerConfig.defaultSwaggerPathProvider().getApplicationBasePath());
         return new SwaggerSpringMvcPlugin(this.springSwaggerConfig)
-                .apiInfo(new ApiInfo("Spring RESTful Authorization Demo Api",
+                .apiInfo(new ApiInfo("spring-token-restful api doc",
                         null, null, null, null, null)).
                         //将Timestamp类型全部转为Long类型
                         directModelSubstitute(Timestamp.class, Long.class);
+                        
     }
 
 }

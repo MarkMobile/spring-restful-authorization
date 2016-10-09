@@ -1,5 +1,7 @@
 package com.scienjus.authorization.manager;
 
+import java.util.Map;
+
 import com.scienjus.authorization.model.TokenModel;
 
 /**
@@ -35,5 +37,18 @@ public interface TokenManager {
      * @param userId 登录用户的id
      */
     public void deleteToken(long userId);
+    
+    /**
+     * 根据用户id获取token
+     * @param userid 用户id
+     * @return
+     */
+    public Map<String,Object> getToken(long userId);
+    
+    /** 设置缓存时间
+     * @param userId
+     * @param time 格式 yyyy-MM-dd HH:mm:ss
+     */
+    public void setTokenExpire(long userId,String time);
 
 }

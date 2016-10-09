@@ -1,6 +1,6 @@
 ###简介
 
-关于Demo的介绍可以参考[RESTful登录设计（基于Spring及Redis的Token鉴权）][1]
+ 主要展示后端token机制,怎样生成？怎样加密？单点登录，跨域等多种问题
 
 ###演示方式
 
@@ -25,11 +25,6 @@
 </dependency>
 ```
 
-感谢@yrain的反馈！
 
-###其他
 
-如果这个Demo的功能刚好可以满足你的需求，在这里推荐我根据其封装的库：[Spring Authorization Manager][2]，希望能帮助你完成API服务端的身份验证功能。
 
-[1]:http://www.scienjus.com/restful-token-authorization/
-[2]:https://github.com/ScienJus/spring-authorization-manager

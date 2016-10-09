@@ -11,23 +11,23 @@ import javax.persistence.Table;
  * @date 2015/7/31.
  */
 @Entity
-@Table(name = "user_")
+@Table(name = "tbl_user")
 public class User {
     //用户名
-    @Column(name = "username_")
+    @Column(name = "username")
     private String username;
 
     //密码
-    @Column(name = "password_")
+    @Column(name = "password")
     private String password;
 
     //用户id
     @Id
-    @Column(name = "id_")
+    @Column(name = "id")
     private long id;
 
     //昵称
-    @Column(name = "nickname_")
+    @Column(name = "nickname")
     private String nickname;
 
     public String getUsername() {
