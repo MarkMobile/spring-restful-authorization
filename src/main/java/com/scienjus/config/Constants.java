@@ -16,6 +16,8 @@ public class Constants {
      * token有效期（小时）
      */
     public static final int TOKEN_EXPIRES_HOUR = 30*1*60*60;//天时分秒
+    
+    public static final int TOKEN_EXPIRES_SECONDS = 7*24*60*60*1000;//天时分秒
 
     /**
      * 存放Authorization的header字段

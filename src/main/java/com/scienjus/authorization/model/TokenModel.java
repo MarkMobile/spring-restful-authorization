@@ -1,5 +1,10 @@
 package com.scienjus.authorization.model;
 
+import java.util.Date;
+
+import com.scienjus.utils.DateFormatUtil;
+
+
 /**
  * Token的Model类，可以增加字段提高安全性，例如时间戳、url签名
  * @author ScienJus
@@ -13,12 +18,15 @@ public class TokenModel {
     //随机生成的uuid
     private String token;
     
-    private String TOKEN_EXPIRES_HOUR;//token失效时间
+    private String expires;//token失效时间
+    
+    private long expires_in;
 
-    public TokenModel(long userId, String token,String TOKEN_EXPIRES_HOUR) {
+    public TokenModel(long userId, String token,String millise) {
         this.userId = userId;
         this.token = token;
-        this.TOKEN_EXPIRES_HOUR=TOKEN_EXPIRES_HOUR;
+        this.expires=DateFormatUtil.add(new Date(), "yyyy-MM-dd HH:mm:ss", Long.valueOf(millise));
+        this.expires_in=DateFormatUtil.addLong(new Date(), "yyyy-MM-dd HH:mm:ss", Long.valueOf(millise));
     }
 
     public long getUserId() {
@@ -37,13 +45,23 @@ public class TokenModel {
         this.token = token;
     }
 
-	public String getTOKEN_EXPIRES_HOUR() {
-		return TOKEN_EXPIRES_HOUR;
+	public String getExpires() {
+		return expires;
 	}
 
-	public void setTOKEN_EXPIRES_HOUR(String tOKEN_EXPIRES_HOUR) {
-		TOKEN_EXPIRES_HOUR = tOKEN_EXPIRES_HOUR;
+	public void setExpires(String expires) {
+		this.expires = expires;
 	}
-    
+
+	public long getExpires_in() {
+		return expires_in;
+	}
+
+	public void setExpires_in(long expires_in) {
+		this.expires_in = expires_in;
+	}
+
+	
+
     
 }

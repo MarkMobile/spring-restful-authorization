@@ -889,13 +889,15 @@ public class DateFormatUtil {
 		}
 		return result;
 	}
+
 	/**
+	 * 两个时间间的时间戳计算函数
 	 * 
 	 * @param beginDate
 	 * @param endDate
 	 * @param f
 	 *            时间差的形式0:秒,1:分种,2:小时,3:天
-	 * @return
+	 * @return long 秒
 	 */
 	public static long getDifference(Date beginDate, Date endDate, int f) {
 		long result = 0;
@@ -913,11 +915,11 @@ public class DateFormatUtil {
 			 * */
 			switch (f) {
 			case 0: // second
-				return  (millisecond / 1000);
+				return (millisecond / 1000);
 			case 1: // minute
 				return (millisecond / (1000 * 60));
 			case 2: // hour
-				return  (millisecond / (1000 * 60 * 60));
+				return (millisecond / (1000 * 60 * 60));
 			case 3: // day
 				return (millisecond / (1000 * 60 * 60 * 24));
 			}
@@ -927,7 +929,6 @@ public class DateFormatUtil {
 		return result;
 	}
 
-	
 	/**
 	 * <p>
 	 * 比较两个日期的大小,精确到秒
@@ -953,8 +954,6 @@ public class DateFormatUtil {
 		long long2 = Long.parseLong(d2Str);
 		return long1 - long2;
 	}
-
-	
 
 	public static Date getPreYearStartTime() {
 		Calendar cal = Calendar.getInstance();
@@ -1060,26 +1059,83 @@ public class DateFormatUtil {
 		}
 		return now;
 	}
-	
 
 	/**
 	 * 根据指定日期,来运算加减乘除
-	 * @param date 
+	 * 
+	 * @param date
 	 * @param format
 	 * @param value
-	 * add(new Date(),"yyyy-MM-dd HH:mm:ss",-1 * 1 * 60 * 60 * 1000);
+	 *            add(new Date(),"yyyy-MM-dd HH:mm:ss",-1 * 1 * 60 * 60 * 1000);
 	 */
-	public static void add(Date date,String format,long value){
-		   SimpleDateFormat df=new SimpleDateFormat(format);   
-		   System.out.println("起始日期："+df.format(date));   
-//		   System.out.println("两天前的日期：" + df.format(new Date(d.getTime() - 2 * 24 * 60 * 60 * 1000)));  
-//		   System.out.println("三天后的日期：" + df.format(new Date(d.getTime() + 3 * 24 * 60 * 60 * 1000)));
-		   long newValue=date.getTime()+value;
-		   System.out.println("变化后的日期：" + df.format(new Date(newValue)));
+	public static String add(Date date, String format, long value) {
+		SimpleDateFormat df = new SimpleDateFormat(format);
+		long newValue = date.getTime() + value;
+		return df.format(new Date(newValue));
 	}
-	
-	public static void main(String[] args) {
-		add(new Date(),"yyyy-MM-dd HH:mm:ss",-1 * 1 * 60 * 60 * 1000);
 
+	public static long addLong(Date date, String format, long value) {
+		SimpleDateFormat df = new SimpleDateFormat(format);
+		long newValue = date.getTime() + value;
+		return newValue;
+	}
+
+	/**
+	 * 计算时差 根据 long 返回时间点
+	 * 
+	 * @param millisecond
+	 * @return string 0天0时11分55秒
+	 */
+	public static String parseMillisecone(long millisecond) {
+		String time = null;
+		try {
+			long yushu_day = millisecond % (1000 * 60 * 60 * 24);
+			long yushu_hour = (millisecond % (1000 * 60 * 60 * 24))
+					% (1000 * 60 * 60);
+			long yushu_minute = millisecond % (1000 * 60 * 60 * 24)
+					% (1000 * 60 * 60) % (1000 * 60);
+			@SuppressWarnings("unused")
+			long yushu_second = millisecond % (1000 * 60 * 60 * 24)
+					% (1000 * 60 * 60) % (1000 * 60) % 1000;
+			if (yushu_day == 0) {
+				return (millisecond / (1000 * 60 * 60 * 24)) + "天";
+			} else {
+				if (yushu_hour == 0) {
+					return (millisecond / (1000 * 60 * 60 * 24)) + "天"
+							+ (yushu_day / (1000 * 60 * 60)) + "时";
+				} else {
+					if (yushu_minute == 0) {
+						return (millisecond / (1000 * 60 * 60 * 24)) + "天"
+								+ (yushu_day / (1000 * 60 * 60)) + "时"
+								+ (yushu_hour / (1000 * 60)) + "分";
+					} else {
+						return (millisecond / (1000 * 60 * 60 * 24)) + "天"
+								+ (yushu_day / (1000 * 60 * 60)) + "时"
+								+ (yushu_hour / (1000 * 60)) + "分"
+								+ (yushu_minute / 1000) + "秒";
+
+					}
+
+				}
+
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return time;
+	}
+
+	public static void main(String[] args) throws ParseException {
+		// 获取指定long型的时间
+		System.out.println(parseMillisecone(436765000L));
+		;
+		// 获取时间差的秒数
+		long diff = getDifference(new Date(), new SimpleDateFormat(
+				"yyyy-MM-dd HH:mm:ss").parse("2016-12-10 00:00:00"), 0);
+		System.out.println(getDifference(new Date(), new SimpleDateFormat(
+				"yyyy-MM-dd HH:mm:ss").parse("2016-12-10 00:00:00"), 0));
+		System.out.println("时间：" + parseMillisecone(diff));
+		System.out.println("时间：" + parseMillisecone(diff * 1000));
 	}
 }

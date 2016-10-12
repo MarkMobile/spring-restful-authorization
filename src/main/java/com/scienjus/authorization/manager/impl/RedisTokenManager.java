@@ -41,11 +41,12 @@ public class RedisTokenManager implements TokenManager {
 	public TokenModel createToken(long userId) {
 		// 使用uuid作为源token
 		String token = UUID.randomUUID().toString().replace("-", "");
+		
 		TokenModel model = new TokenModel(userId, token,
-				String.valueOf(Constants.TOKEN_EXPIRES_HOUR));
+				String.valueOf(Constants.TOKEN_EXPIRES_SECONDS));
 		// 存储到redis并设置过期时间
-		redis.boundValueOps(userId).set(token, Constants.TOKEN_EXPIRES_HOUR,
-				TimeUnit.SECONDS);
+		redis.boundValueOps(userId).set(token, Constants.TOKEN_EXPIRES_SECONDS,
+				TimeUnit.MILLISECONDS);
 		return model;
 	}
 
@@ -61,7 +62,7 @@ public class RedisTokenManager implements TokenManager {
 		long userId = Long.parseLong(param[0]);
 		String token = param[1];
 		return new TokenModel(userId, token,
-				String.valueOf(Constants.TOKEN_EXPIRES_HOUR));
+				String.valueOf(Constants.TOKEN_EXPIRES_SECONDS));
 	}
 
 	public boolean checkToken(TokenModel model) {
@@ -87,10 +88,9 @@ public class RedisTokenManager implements TokenManager {
 	public Map<String, Object> getToken(long userId) {
 		Map<String, Object> tokenInfo = new HashMap<String, Object>();
 		tokenInfo.put("token", redis.boundValueOps(userId).get());
-		tokenInfo.put("expire", redis.boundValueOps(userId).getExpire());
-		long time=new Date().getTime() + redis.boundValueOps(userId).getExpire() * 1000;
-		Date d=new Date(time);
-		tokenInfo.put("expire_ch",new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(d));
+		tokenInfo.put("expire", redis.boundValueOps(userId).getExpire());//秒
+		long time=  redis.boundValueOps(userId).getExpire()*1000 ;//毫秒
+		tokenInfo.put("expire_ch",DateFormatUtil.parseMillisecone(time));
 		return tokenInfo;
 	}
 
@@ -103,6 +103,6 @@ public class RedisTokenManager implements TokenManager {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}		
-		redis.boundValueOps(userId).expire(DateFormatUtil.getDifference(startDate, endDate, 0), TimeUnit.SECONDS);
+		redis.boundValueOps(userId).expire(DateFormatUtil.getDifference(startDate, endDate, 0)*1000, TimeUnit.MILLISECONDS);
 	}
 }

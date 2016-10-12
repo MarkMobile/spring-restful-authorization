@@ -77,14 +77,15 @@ public class TokenController {
     	return new ResponseEntity<>(userModel, HttpStatus.OK);
     }
      
-    @RequestMapping(method = RequestMethod.GET,value="/user/{user_id}")
-    public ResponseEntity<User> getUser(@PathVariable int user_id){
+    @RequestMapping(method = RequestMethod.GET,value="/user/{user_id}/{id}")
+    public ResponseEntity<User> getUser(@PathVariable int user_id,@PathVariable Long id){
         User userModel = userRepository.findById(user_id);
+        System.out.println("id="+id);
     	return new ResponseEntity<>(userModel, HttpStatus.OK);
     }
     
     @ApiOperation(value = "获取Token值")
-    @RequestMapping(method = RequestMethod.GET,value="/{user_id}")
+    @RequestMapping(method = RequestMethod.POST,value="/{user_id}")
      public ResponseEntity<ResultModel> getTokens(@PathVariable int user_id){
     	return new ResponseEntity<>(ResultModel.ok(tokenManager.getToken(user_id)), HttpStatus.OK);
    }
